@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="color-scheme" content="light">
+<title>Подключаем агентов</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#f4f1ea; --panel:#fbfaf6; --panel2:#f0ece2; --line:#ddd7c9;
+  --text:#1e1b15; --muted:#7c7666; --red:#b8442b; --green:#1f6f5c; --blue:#2f5fa8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:Inter,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%}
+.wrap{max-width:720px;margin:0 auto;padding:28px 16px 64px}
+h1{font-size:28px;line-height:1.2;margin:0 0 8px;letter-spacing:-.01em}
+.lead{color:var(--muted);margin:0 0 24px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;margin:0 0 14px}
+.card.now{border-color:var(--green);box-shadow:0 0 0 1px var(--green) inset}
+.tag{display:inline-block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:3px 8px;border-radius:999px;margin-bottom:8px}
+.tag.now{background:var(--green);color:#fff}
+.tag.done{background:var(--panel2);color:var(--green);border:1px solid var(--green)}
+.quote{background:#fff;border:1px dashed var(--line);border-radius:10px;padding:12px;font-size:15px}
+.bar{height:10px;background:var(--panel2);border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--green)}
+.tag.next{background:var(--panel2);color:var(--muted)}
+h2{font-size:19px;margin:0 0 8px}
+ol{margin:8px 0 0;padding-left:22px}
+li{margin:4px 0}
+code{background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:14px}
+.btn{display:inline-block;border:0;border-radius:999px;padding:12px 18px;font:600 15px Inter,sans-serif;cursor:pointer;text-decoration:none;min-height:44px}
+.btn.primary{background:var(--text);color:#fff}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line)}
+.btn+.btn{margin-left:8px}
+.note{font-size:14px;color:var(--muted);margin-top:10px}
+.warn{font-size:14px;color:var(--red);margin-top:10px}
+fieldset{border:0;padding:0;margin:0 0 14px}
+legend{font-weight:600;margin-bottom:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opts label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;cursor:pointer;font-size:15px}
+.opts input{accent-color:var(--green)}
+textarea{width:100%;min-height:110px;border:1px solid var(--line);border-radius:10px;padding:10px;font:15px Inter,sans-serif;background:#fff;color:var(--text);resize:vertical}
+.actions{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+.actions .btn+.btn{margin-left:0}
+#status{font-size:14px;color:var(--green);margin-top:8px;min-height:20px}
+footer{color:var(--muted);font-size:13px;margin-top:24px}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Марина, подключаем твоих агентов</h1>
+  <p class="lead">Цель: твой Codex и Claude работают в связке с ИИ Дмитрия. Первая общая задача — ежедневная ИИ-сводка по Беларуси. Агенты обмениваются результатами сами, тебе остаются решения. Шаг 1 уже позади. Дальше по порядку; внизу — форма, чтобы сказать, что получилось.</p>
+
+  <section class="card" id="progress">
+    <h2>Прогресс</h2>
+    <p style="margin:0 0 12px">Живой статус всех шагов — в документе: что сделано, что сейчас, что дальше. Файлы для тебя — в папке.</p>
+    <div class="actions" style="margin-top:0">
+      <a class="btn primary" href="https://docs.google.com/document/d/12Ic9k79Lf4Kp_r1fheIX6PKXL8PLHPjEeyeHU4bZGnM/view" target="_blank" rel="noopener">Открыть прогресс</a>
+      <a class="btn ghost" href="https://drive.google.com/drive/folders/1onwfSGDWQcts5ETf3AXk3gyMI8G4Iz-g" target="_blank" rel="noopener">Папка с файлами</a>
+    </div>
+    <p class="note">Документ обновляется после каждого шага.</p>
+  </section>
+
+  <section class="card" id="step1">
+    <span class="tag done">Шаг 1 · готово ✓</span>
+    <h2>Скан среды — получили, спасибо</h2>
+    <p style="margin:0 0 8px"><b>Что это даёт.</b> Мы видим, что у тебя уже стоит (ChatGPT/Codex, Gmail, проект с CRM и Telegram-ботом), и не ставим лишнего. Скан честно отметил, где данных не хватило. Это не оценка тебя, а карта: откуда начать, чтобы агенты экономили твоё время, а не добавляли работы.</p>
+    <p class="note" style="margin:0">Файл скана, если нужен ещё раз: <a href="karta-ii-scan.txt" download="Карта_ИИ_скан_среды.txt">скачать</a>.</p>
+  </section>
+
+  <section class="card now" id="step2">
+    <span class="tag now">Шаг 2 · сейчас · 1 минута</span>
+    <h2>Почта Google</h2>
+    <p style="margin:0">Пришли Дмитрию в Telegram почту Google — откроем общую папку, куда агенты будут класть файлы друг для друга.</p>
+  </section>
+
+  <section class="card now" id="step3">
+    <span class="tag now">Шаг 3 · сейчас · 5–10 минут</span>
+    <h2>Пять вопросов вместо «не знаю»</h2>
+    <p style="margin:0 0 8px">Скан прошёл без вопросов, поэтому главное осталось пустым: что ты продаёшь, откуда приходят клиенты, работает ли сейчас бот. В том же чате Codex вставь фразу ниже и ответь как удобно — коротко, голосом, «не знаю» тоже ок.</p>
+    <div class="quote" id="q3">Задай мне 5 самых важных вопросов из тех, что в итоге остались UNKNOWN: продукт, клиенты, бот, время, расходы. По одному. Потом обнови итог и сохрани файлом.</div>
+    <div class="actions"><button class="btn ghost" type="button" data-copy="q3">Скопировать фразу</button></div>
+    <p class="note">Новый файл итога пришли Дмитрию в Telegram.</p>
+  </section>
+
+  <section class="card">
+    <span class="tag next">Шаг 4 · готовим мы</span>
+    <h2>Набор настроек и связь агентов</h2>
+    <p style="margin:0">По твоему итогу соберём набор под Windows и Codex: одна рабочая папка, правила, сохранение длинных чатов. Потом пришлём приглашение в Мурмур — канал, где твой Codex и ИИ Дмитрия переписываются напрямую, и общий чат: ты, Дмитрий и боты. Ничего не ставится без твоего «да».</p>
+  </section>
+
+  <section class="card" id="feedback">
+    <h2>Обратная связь</h2>
+    <p class="note" style="margin-top:0">Отметь, где ты сейчас, и нажми кнопку — откроется Telegram с готовым сообщением Дмитрию, останется нажать «Отправить».</p>
+    <form id="fb" onsubmit="return false">
+      <fieldset>
+        <legend>Шаг 2 · почта Google</legend>
+        <div class="opts">
+          <label><input type="radio" name="s2" value="прислала"> Прислала</label>
+          <label><input type="radio" name="s2" value="пришлю позже"> Пришлю позже</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Шаг 3 · пять вопросов</legend>
+        <div class="opts">
+          <label><input type="radio" name="s3" value="ответила, файл пришлю"> Ответила</label>
+          <label><input type="radio" name="s3" value="в процессе"> В процессе</label>
+          <label><input type="radio" name="s3" value="застряла"> Застряла</label>
+          <label><input type="radio" name="s3" value="пропускаю"> Пропускаю</label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Что было непонятно или что пошло не так</legend>
+        <textarea id="msg" placeholder="Например: Codex спросил про …, не поняла, что ответить. Или: всё понятно, страница удобная."></textarea>
+      </fieldset>
+      <div class="actions">
+        <a class="btn primary" id="send" href="https://t.me/Posbitcoin" target="_blank" rel="noopener">Отправить в Telegram</a>
+        <button class="btn ghost" id="copy" type="button">Скопировать текст</button>
+      </div>
+      <div id="status" role="status"></div>
+    </form>
+  </section>
+
+  <footer>Страница для Марины. Вопросы — Дмитрию в Telegram.</footer>
+</main>
+<script>
+(function(){
+  var KEY='fb-draft-v2';
+  var form=document.getElementById('fb'), msg=document.getElementById('msg');
+  var send=document.getElementById('send'), copy=document.getElementById('copy'), st=document.getElementById('status');
+  function val(n){var x=form.querySelector('input[name="'+n+'"]:checked');return x?x.value:'—';}
+  function text(){
+    var t='Обратная связь по странице подключения агентов\n'+
+      'Шаг 2, почта: '+val('s2')+'\n'+
+      'Шаг 3, вопросы: '+val('s3');
+    var m=msg.value.trim(); if(m) t+='\nКомментарий: '+m;
+    return t;
+  }
+  function update(){
+    send.href='https://t.me/Posbitcoin?text='+encodeURIComponent(text());
+    try{localStorage.setItem(KEY,JSON.stringify({s2:val('s2'),s3:val('s3'),m:msg.value}));}catch(e){}
+  }
+  try{
+    var d=JSON.parse(localStorage.getItem(KEY)||'null');
+    if(d){
+      ['s2','s3'].forEach(function(n){var x=form.querySelector('input[name="'+n+'"][value="'+d[n]+'"]');if(x)x.checked=true;});
+      msg.value=d.m||'';
+    }
+  }catch(e){}
+  form.addEventListener('change',update); msg.addEventListener('input',update);
+  update();
+  copy.addEventListener('click',function(){
+    var t=text();
+    function ok(){st.textContent='Скопировано — вставь в чат с Дмитрием.';}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(t).then(ok,function(){fallback(t);ok();});
+    }else{fallback(t);ok();}
+  });
+  document.querySelectorAll('[data-copy]').forEach(function(b){b.addEventListener('click',function(){
+    var t=document.getElementById(b.getAttribute('data-copy')).textContent;
+    function ok(){b.textContent='Скопировано ✓';}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){fallback(t);ok();});}else{fallback(t);ok();}
+  });});
+  function fallback(t){var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();try{document.execCommand('copy');}catch(e){}a.remove();}
+})();
+</script>
+</body>
+</html>
