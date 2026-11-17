@@ -86,6 +86,7 @@ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:1
       <tr><td>1</td><td><b>Созвон в Telegram</b> 15–20 минут: ты рассказываешь, что хочешь от CRM и агентов.</td></tr>
       <tr><td>✓</td><td><b>Скрин среды</b> получен: окно Codex с любой задачей, папка проекта, настройки.</td></tr>
       <tr><td>3</td><td><b>Подготовка к мосту</b>: вставь в Codex текст ниже.</td></tr>
+      <tr><td>3a</td><td><b>Telegram для Codex</b> (только чтение) — блок ниже.</td></tr>
       <tr><td>4</td><td><b>Мост</b>: личное приглашение пришлю отдельно, Codex поставит сам, проверка «ping → pong».</td></tr>
       <tr><td>5</td><td><b>Первая задача агентам</b>: найти рабочую версию CRM и бота, прогнать 5 тестовых сценариев (запись, перенос, отмена, напоминание, новый клиент).</td></tr>
     </table>
@@ -118,6 +119,39 @@ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:1
     <p class="note" id="copied" hidden>Скопировано. Ответ Codex пришли Дмитрию в Telegram.</p>
   </section>
 
+  <section class="card now" id="telegram">
+    <span class="tag now">Сейчас · Telegram для Codex</span>
+    <h2>Telegram для Codex (Windows), ~20 минут</h2>
+    <p style="margin:0">Зачем: Codex будет читать нужные чаты текстом, а не через скриншоты экрана — дешевле и без ошибок окон. Подключение через открытую программу <code>telegram-mcp</code> (библиотека Telethon). Режим — <b>только чтение</b>: отправлять от твоего имени Codex не сможет.</p>
+    <p class="note"><b>Правила:</b> ключи (<code>api_id</code>, <code>api_hash</code>) и «строка сессии» — только в файле <code>.env</code> на твоём компьютере. Никому не присылать, ни в чат, ни Дмитрию. Строка сессии = ключ от твоего Telegram. Если утекла: Telegram → Настройки → Устройства → завершить сеанс.</p>
+    <ol>
+      <li><b>Ключи.</b> Открой <a href="https://my.telegram.org" target="_blank" rel="noopener">my.telegram.org</a> → вход по номеру → <i>API development tools</i> → App title <code>MarinaWork</code>, Short name <code>marinawork</code> → Create. Вкладку не закрывай.</li>
+      <li><b>Codex читает код</b> (вставь в Codex):
+<pre>Прочитай код github.com/chigwell/telegram-mcp (README, main.py, session_string_generator.py) и коротко объясни мне, что он делает и есть ли риски. Ничего не ставь.</pre></li>
+      <li><b>Если ок — установка</b> (вставь в Codex):
+<pre>1) Проверь git --version и uv --version. Чего нет — спроси у меня «да» на winget install Git.Git / winget install astral-sh.uv. После установки перезапусти Codex.
+2) git clone https://github.com/chigwell/telegram-mcp.git C:\AI\tools\telegram-mcp
+   Затем в этой папке: uv sync. НЕ используй pip install telegram-mcp и uvx telegram-mcp — под этим именем другой проект.
+3) Скопируй .env.example в .env и открой: notepad C:\AI\tools\telegram-mcp\.env
+   Я сама впишу TELEGRAM_API_ID и TELEGRAM_API_HASH. Ты добавь строку TELEGRAM_EXPOSED_TOOLS=read-only. Ключи в чат не пиши.
+4) Сделай резервную копию и подключи сервер в %USERPROFILE%\.codex\config.toml:
+   [mcp_servers.telegram]
+   command = "uv"
+   args = ["--directory", "C:/AI/tools/telegram-mcp", "run", "main.py"]
+   startup_timeout_sec = 60
+5) Запомни правило: Telegram только через этот MCP, отправка — только после моего «да».</pre></li>
+      <li><b>Строка сессии — сама, в отдельном окне.</b> <code>Win</code> → набери <code>PowerShell</code> → Enter, затем по очереди:
+<pre>cd C:\AI\tools\telegram-mcp
+uv run session_string_generator.py --phone</pre>
+        Введи номер, код из Telegram и пароль (если есть; при вводе не виден — это нормально). На вопрос <code>(y/N)</code> напиши <code>y</code> — строка сама попадёт в <code>.env</code>. Окно закрой.</li>
+      <li><b>Перезапуск.</b> Закрой Codex полностью (значок у часов → правой кнопкой → Выход) и открой снова.</li>
+      <li><b>Проверка</b> (новый чат Codex):
+<pre>Проверь Telegram MCP: кто авторизован (имя). Прочитай 3 последних сообщения из чата с Дмитрием (@Posbitcoin). Ничего не отправляй. Потом перечисли свои инструменты Telegram.</pre>
+        Готово, если видно имя и 3 сообщения текстом, а в инструментах нет send / delete / edit.</li>
+    </ol>
+    <p class="note">Застряла на любом шаге — пришли Дмитрию текст ошибки целиком (не только скриншот). Можно сделать вместе на созвоне.</p>
+  </section>
+
   <section class="card" id="step4">
     <span class="tag next">Дальше</span>
     <h2>Мост: как устроен</h2>
@@ -126,7 +160,7 @@ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:1
       <li>Дмитрий пришлёт личное приглашение (строка <code>MURMUR:…</code>). Вставь его в Codex один раз со словами «прими приглашение Мурмур» и больше никуда не пересылай: это ключ.</li>
       <li>Если Codex пишет про сертификат или TLS — это ожидаемо. Ставим сертификат только из присланного Дмитрием файла со сверкой отпечатка. Проверку отключать нельзя.</li>
       <li>Проверка связи: Codex отправляет <code>ping</code> в тему <code>salon-crm</code>, ИИ Дмитрия отвечает <code>pong</code>.</li>
-      <li>Telegram для Codex — потом и только «чтение», без отправки от твоего имени.</li>
+      <li>Telegram для Codex — блок выше, только «чтение».</li>
     </ul>
   </section>
 
