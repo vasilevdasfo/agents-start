@@ -41,6 +41,7 @@ table{width:100%;border-collapse:collapse;font-size:15px}
 td{border-top:1px solid var(--line);padding:8px 6px;vertical-align:top}
 td:first-child{white-space:nowrap;color:var(--muted);width:1%}
 textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:10px;padding:10px;font:15px Inter,sans-serif;background:#fff;color:var(--text)}
+.faq dt{font-weight:600;margin-top:12px}.faq dd{margin:4px 0 0 0;color:var(--muted,#7c7666)}
 </style>
 </head>
 <body>
@@ -125,7 +126,7 @@ textarea{width:100%;min-height:90px;border:1px solid var(--line);border-radius:1
     <p style="margin:0">Зачем: Codex будет читать нужные чаты текстом, а не через скриншоты экрана — дешевле и без ошибок окон. Подключение через открытую программу <code>telegram-mcp</code> (библиотека Telethon). Режим — <b>только чтение</b>: отправлять от твоего имени Codex не сможет.</p>
     <p class="note"><b>Правила:</b> ключи (<code>api_id</code>, <code>api_hash</code>) и «строка сессии» — только в файле <code>.env</code> на твоём компьютере. Никому не присылать, ни в чат, ни Дмитрию. Строка сессии = ключ от твоего Telegram. Если утекла: Telegram → Настройки → Устройства → завершить сеанс.</p>
     <ol>
-      <li><b>Ключи.</b> Открой <a href="https://my.telegram.org" target="_blank" rel="noopener">my.telegram.org</a> → вход по номеру → <i>API development tools</i> → App title <code>MarinaWork</code>, Short name <code>marinawork</code> → Create. Вкладку не закрывай.</li>
+      <li><b>Ключи.</b> Открой <a href="https://my.telegram.org" target="_blank" rel="noopener">my.telegram.org</a> → вход по номеру → <i>API development tools</i> → App title <code>MarinaAssistant</code>, Short name <code>marinaassistant</code>, Platform Desktop → Create. Вкладку не закрывай.</li>
       <li><b>Codex читает код</b> (вставь в Codex):
 <pre>Прочитай код github.com/chigwell/telegram-mcp (README, main.py, session_string_generator.py) и коротко объясни мне, что он делает и есть ли риски. Ничего не ставь.</pre></li>
       <li><b>Если ок — установка</b> (вставь в Codex):
@@ -152,16 +153,52 @@ uv run session_string_generator.py --phone</pre>
     <p class="note">Застряла на любом шаге — пришли Дмитрию текст ошибки целиком (не только скриншот). Можно сделать вместе на созвоне.</p>
   </section>
 
-  <section class="card" id="step4">
-    <span class="tag next">Дальше</span>
-    <h2>Мост: как устроен</h2>
-    <ul>
-      <li>Мост — защищённый канал, где твой Codex и ИИ Дмитрия пишут друг другу без тебя.</li>
-      <li>Дмитрий пришлёт личное приглашение (строка <code>MURMUR:…</code>). Вставь его в Codex один раз со словами «прими приглашение Мурмур» и больше никуда не пересылай: это ключ.</li>
-      <li>Если Codex пишет про сертификат или TLS — это ожидаемо. Ставим сертификат только из присланного Дмитрием файла со сверкой отпечатка. Проверку отключать нельзя.</li>
-      <li>Проверка связи: Codex отправляет <code>ping</code> в тему <code>salon-crm</code>, ИИ Дмитрия отвечает <code>pong</code>.</li>
-      <li>Telegram для Codex — блок выше, только «чтение».</li>
-    </ul>
+  <section class="card now" id="step4">
+    <span class="tag now">Сейчас · Мост (Мурмур), ~15 минут</span>
+    <h2>Мост: подключить твой Codex к ИИ Дмитрия</h2>
+    <p style="margin:0">Мост — защищённый канал, где твой Codex и ИИ Дмитрия пишут друг другу без тебя. Тебе приходят только итоги и вопросы «да / нет». Имя твоего агента в мосте — <code>marina-codex</code>, тема — <code>salon-crm</code>.</p>
+    <ol>
+      <li><b>Сохрани два файла</b> из Telegram (Дмитрий прислал их 17.11): приглашение <code>invite_marina.txt</code> и сертификат <code>server_ca.pem</code>. Положи оба в папку <code>%USERPROFILE%\.murmur\</code> (вставь этот путь в адресную строку Проводника; нет папки — создай).</li>
+      <li><b>Вставь в Codex</b> (лучше в чат «Установи мур мур»):
+<pre>Подключи Мурмур. Имя агента: marina-codex.
+Приглашение: %USERPROFILE%\.murmur\invite_marina.txt
+Сертификат: %USERPROFILE%\.murmur\server_ca.pem
+1) Проверь SHA-256 сертификата, должно быть:
+   1e124ae1c989a434fc6e756e7df0a2bd22f95a60e59515586f8870843c2fcf12
+   Не совпало — остановись и скажи мне.
+2) Сертификат подключай через NODE_EXTRA_CA_CERTS. Проверку TLS не отключай.
+3) Выполни murmur join --agent-id marina-codex --invite-file <приглашение> --reply-out %USERPROFILE%\.murmur\reply_marina.txt
+4) Покажи мне, где лежит reply_marina.txt. Содержимое приглашения в чат не выводи.</pre></li>
+      <li><b>Отправь Дмитрию в Telegram файл</b> <code>reply_marina.txt</code> (это «ответ», он не секретный). ИИ Дмитрия добавит тебя и пришлёт проверку.</li>
+      <li><b>Проверка связи</b> (вставь в Codex после ответа Дмитрия):
+<pre>Отправь в Мурмур агенту dmitrii-lead-agent, тема salon-crm:
+[PROTO:peer-v0.1] [FROM:marina-codex] [ID:ping-1] [TYPE:msg] ping
+Потом через 2 минуты проверь входящие (murmur_inbox, limit 3).</pre>
+        Готово, если во входящих пришёл <code>pong</code> с тем же ID.</li>
+    </ol>
+    <p class="note">Codex сам не просыпается от новых сообщений моста. Когда нужно — скажи ему «проверь входящие Мурмура». Это нормально.</p>
+  </section>
+
+  <section class="card" id="faq">
+    <h2>Вопросы и ответы</h2>
+    <dl class="faq">
+      <dt>Codex пишет, что нет доступа к сети / не может скачать (PyPI, npm, GitHub)</dt>
+      <dd>Это песочница Codex, не поломка. Нажми «Разрешить», когда он спросит. Не спрашивает — напиши: «Запроси разрешение на доступ к сети и повтори команду».</dd>
+      <dt>Codex предлагает свой способ (например, вход через Telethon вместо telegram-mcp)</dt>
+      <dd>Можно, если он показывает код и не просит ключи в чат. Главное правило одно: <code>api_id</code>, <code>api_hash</code>, код входа и строку сессии вводишь только в окне на своём компьютере, в чат — никогда. И пусть режим будет «только чтение», пока сама не решишь иначе.</dd>
+      <dt>my.telegram.org: что писать в форме</dt>
+      <dd>App title — любое из 5+ латинских букв, например <code>MarinaAssistant</code>; Short name — <code>marinaassistant</code>; Platform — Desktop; URL и Description — пусто. Слово «Telegram» в названии нельзя.</dd>
+      <dt>Ошибка про сертификат, TLS, «self-signed», «unable to verify»</dt>
+      <dd>Значит, Codex не видит файл <code>server_ca.pem</code>. Скажи: «Подключи сертификат через NODE_EXTRA_CA_CERTS, путь …, и перезапусти». Отключать проверку нельзя.</dd>
+      <dt>После установки Codex «не видит» новый инструмент</dt>
+      <dd>Закрой Codex полностью (значок у часов → правой кнопкой → Выход) и открой снова. Новые подключения подхватываются только после перезапуска.</dd>
+      <dt>Что можно присылать Дмитрию, а что нет</dt>
+      <dd>Можно: скриншоты, текст ошибок целиком, файл <code>reply_marina.txt</code>. Нельзя: ключи, пароли, коды, строку сессии, файл приглашения обратно, данные клиентов салона.</dd>
+      <dt>Кто мне отвечает в Telegram</dt>
+      <dd>Дмитрий и его ИИ (подпись «— ✍️ ИИ»). ИИ отвечает быстро и коротко: «получил, отвечу до …», ссылка на нужный блок, следующий шаг. Всё по существу, деньги и созвоны — сам Дмитрий.</dd>
+      <dt>Сломала / сделала не так</dt>
+      <dd>Ничего страшного: всё, что мы ставим, откатывается. Пришли текст ошибки целиком — разберём, или сделаем вместе на созвоне.</dd>
+    </dl>
   </section>
 
   <section class="card" id="rules">
